@@ -1,10 +1,8 @@
 name: MS Teams Notification
 
-on: 
-    pull_request:
-      types: [opened]
-    repository_dispatch:
-        types: [org-workflow-bot] 
+on:
+  repository_dispatch:
+    types: [org-workflow-bot]  
 jobs:
   register:
     runs-on: ubuntu-latest
