@@ -2,6 +2,7 @@ name: MS Teams Notification
 
 on: 
     pull_request:
+      types: [opened]
     repository_dispatch:
         types: [org-workflow-bot] 
 jobs:
@@ -9,6 +10,15 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
+
+      - uses: SvanBoxel/organization-workflow@main
+        with:
+          id: ${{ github.event.client_payload.id }}
+          callback_url: ${{ github.event.client_payload.callback_url }}
+          sha: ${{ github.event.client_payload.sha }}
+          run_id: ${{ github.run_id }}
+          name: ${{ github.workflow }}
+
       - uses: actions/checkout@v2
       # this is the new step using the ms-teams-notification action
       - name: Notify dedicated teams channel
