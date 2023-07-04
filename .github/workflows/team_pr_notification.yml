@@ -1,27 +1,14 @@
-name: MS Teams Notification
-
+name: Required Workflow MS teams notification
 on:
-  repository_dispatch:
-    types: [org-workflow-bot]  
+  pull_request:
+    types: [opened, reopened, synchronize]
 jobs:
-  register:
+  build:
     runs-on: ubuntu-latest
     steps:
-    - uses: SvanBoxel/organization-workflow@main
-      with:
-        id: ${{ github.event.client_payload.id }}
-        callback_url: ${{ github.event.client_payload.callback_url }}
-        sha: ${{ github.event.client_payload.sha }}
-        run_id: ${{ github.run_id }}
-        name: ${{ env.name || github.workflow }}
+    - name: Checkout code
+      uses: actions/checkout@v2
 
-  main:
-    needs: [register]
-    runs-on: ubuntu-latest
-    steps:
-
-    - uses: actions/checkout@v2
-    # this is the new step using the ms-teams-notification action
     - name: Notify dedicated teams channel
       uses: jdcargile/ms-teams-notification@v1.3
       with:
